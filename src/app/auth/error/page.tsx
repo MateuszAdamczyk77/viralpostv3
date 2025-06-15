@@ -1,8 +1,8 @@
-import Link from 'next/link'
-import { Suspense } from 'react'
+import Link from 'next/link';
+import { Suspense } from 'react';
 
 interface AuthErrorPageProps {
-  searchParams: Promise<{ message?: string }>
+  searchParams: Promise<{ message?: string }>;
 }
 
 /**
@@ -10,14 +10,14 @@ interface AuthErrorPageProps {
  * Displays OAuth and other authentication errors
  */
 export default async function AuthErrorPage({ searchParams }: AuthErrorPageProps) {
-  const params = await searchParams
-  const errorMessage = params.message || 'An authentication error occurred'
+  const params = await searchParams;
+  const errorMessage = params.message || 'An authentication error occurred';
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
             <svg
               className="h-6 w-6 text-red-600"
               fill="none"
@@ -41,18 +41,18 @@ export default async function AuthErrorPage({ searchParams }: AuthErrorPageProps
             </p>
           </Suspense>
         </div>
-        
+
         <div className="mt-8 space-y-6">
-          <div className="text-center space-y-2">
+          <div className="space-y-2 text-center">
             <Link
               href="/login"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
             >
               Try Again
             </Link>
             <Link
               href="/"
-              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
             >
               Return to Home
             </Link>
@@ -60,5 +60,5 @@ export default async function AuthErrorPage({ searchParams }: AuthErrorPageProps
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}
