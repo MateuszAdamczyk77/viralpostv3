@@ -6,9 +6,20 @@ export async function updateSession(request: NextRequest) {
     request,
   });
 
+  // Check if environment variables are available
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('Missing Supabase environment variables');
+    console.error('NEXT_PUBLIC_SUPABASE_URL:', !!supabaseUrl);
+    console.error('NEXT_PUBLIC_SUPABASE_ANON_KEY:', !!supabaseAnonKey);
+    return supabaseResponse;
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
@@ -37,12 +48,18 @@ export async function updateSession(request: NextRequest) {
 
   if (
     !user &&
+    !request.nextUrl.pathname.startsWith('/auth') &&
+    !request.nextUrl.pathname.startsWith('/sign-in') &&
+    !request.nextUrl.pathname.startsWith('/sign-up') &&
     !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth')
+    !request.nextUrl.pathname.startsWith('/_next') &&
+    !request.nextUrl.pathname.startsWith('/api') &&
+    request.nextUrl.pathname !== '/'
   ) {
-    // no user, potentially respond by redirecting the user to the login page
+    // no user, potentially respond by redirecting the user to the sign-in page
     const url = request.nextUrl.clone();
-    url.pathname = '/login';
+    url.pathname = '/sign-in';
+    url.searchParams.set('next', request.nextUrl.pathname);
     return NextResponse.redirect(url);
   }
 

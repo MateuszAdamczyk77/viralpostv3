@@ -92,6 +92,8 @@ export const useAuthStore = create<AuthState>()(
           rememberMe: state.rememberMe,
           showPassword: state.showPassword,
         }),
+        // Fix SSR hydration mismatch
+        skipHydration: true,
       },
     ),
     {

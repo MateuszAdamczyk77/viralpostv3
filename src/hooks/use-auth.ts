@@ -85,7 +85,7 @@ export function useAuth(): AuthState & AuthActions {
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase.auth, setError]);
+  }, [supabase.auth]); // Remove setError from dependency array
 
   const signOut = async (): Promise<void> => {
     try {
@@ -160,7 +160,7 @@ export function useAuthRole() {
  * Hook for protected components that require authentication
  * Automatically redirects to sign-in if not authenticated
  */
-export function useRequireAuth(redirectTo: string = '/auth/signin') {
+export function useRequireAuth(redirectTo: string = '/sign-in') {
   const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {

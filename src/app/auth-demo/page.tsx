@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -17,18 +17,33 @@ import { useAuthStore, useAuthActions } from '@/stores/auth-store';
  */
 export default function AuthDemoPage() {
   const [formMode, setFormMode] = useState<'signin' | 'signup'>('signin');
+  const [mounted, setMounted] = useState(false);
   const { user, isAuthenticated, isLoading, signOut } = useAuth();
   const { isAdmin, isPremium, userRole } = useAuthRole();
   const authState = useAuthStore();
   const { setError, clearError } = useAuthActions();
 
-  const handleTestError = () => {
-    setError('This is a test error message to demonstrate error handling.');
-  };
+  // Handle hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  const handleClearError = () => {
+  const handleTestError = useCallback(() => {
+    setError('This is a test error message to demonstrate error handling.');
+  }, [setError]);
+
+  const handleClearError = useCallback(() => {
     clearError();
-  };
+  }, [clearError]);
+
+  // Don't render until mounted to avoid hydration issues
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12 px-4 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">

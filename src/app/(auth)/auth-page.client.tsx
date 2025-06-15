@@ -41,7 +41,7 @@ export default function AuthPage({ mode: initialMode }: AuthPageProps) {
   const handleModeChange = (newMode: 'signin' | 'signup') => {
     setMode(newMode);
     // Update URL without triggering a page reload
-    const newPath = newMode === 'signin' ? '/auth/sign-in' : '/auth/sign-up';
+    const newPath = newMode === 'signin' ? '/sign-in' : '/sign-up';
     const currentParams = searchParams?.toString();
     const newUrl = currentParams ? `${newPath}?${currentParams}` : newPath;
     router.replace(newUrl);
@@ -112,7 +112,7 @@ export default function AuthPage({ mode: initialMode }: AuthPageProps) {
           {mode === 'signin' && (
             <p>
               <a 
-                href="/auth/reset-password" 
+                href="/reset-password" 
                 className="text-primary hover:underline"
               >
                 Forgot your password?
